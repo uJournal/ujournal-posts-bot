@@ -1,0 +1,25 @@
+name: Run Node.js script on push or repository_dispatch
+
+on:
+  repository_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "16.x"
+      - run: npm install
+      - name: Run script
+        run: npm start
+        env:
+          USERNAME_OR_EMAIL: ${{ secrets.USERNAME_OR_EMAIL }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          LEMMY_PASSWORD: ${{ secrets.LEMMY_PASSWORD }}
+          SITE_BASE_URL: ${{ secrets.SITE_BASE_URL }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
